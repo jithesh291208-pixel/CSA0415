@@ -1,0 +1,3 @@
+touch sample.txt
+chmod 754 sample.txt
+ls -l sample.txt
