@@ -1,0 +1,102 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int n, i, j, head, size, total = 0;
+    int request[50], temp;
+
+    printf("Enter the number of disk requests: ");
+    scanf("%d", &n);
+
+    if (n <= 0 || n > 50)
+    {
+        printf("Invalid number of requests!\n");
+        return 1;
+    }
+
+    printf("Enter the disk requests:\n");
+
+    for (i = 0; i < n; i++)
+        scanf("%d", &request[i]);
+
+    printf("Enter the initial head position: ");
+    scanf("%d", &head);
+
+    printf("Enter total number of cylinders: ");
+    scanf("%d", &size);
+
+    if (size <= 0 || head < 0 || head >= size)
+    {
+        printf("Invalid disk size or head position!\n");
+        return 1;
+    }
+
+    for (i = 0; i < n; i++)
+    {
+        if (request[i] < 0 || request[i] >= size)
+        {
+            printf("Invalid request position!\n");
+            return 1;
+        }
+    }
+
+    // Sort requests
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = i + 1; j < n; j++)
+        {
+            if (request[i] > request[j])
+            {
+                temp = request[i];
+                request[i] = request[j];
+                request[j] = temp;
+            }
+        }
+    }
+
+    printf("\nC-SCAN Disk Scheduling:\n");
+    printf("Head Movement: %d", head);
+
+    // Move towards right
+    for (i = 0; i < n; i++)
+    {
+        if (request[i] >= head)
+        {
+            total += abs(head - request[i]);
+            head = request[i];
+            printf(" -> %d", head);
+        }
+    }
+
+    // Move to the end of disk
+    if (head != size - 1)
+    {
+        total += (size - 1 - head);
+        head = size - 1;
+        printf(" -> %d", head);
+    }
+
+    // Circular jump to beginning
+    total += (size - 1);
+    head = 0;
+    printf(" -> %d", head);
+
+    // Service remaining requests from beginning
+    for (i = 0; i < n; i++)
+    {
+        if (request[i] < head || request[i] < size)
+        {
+            if (request[i] < 50)  // Requests below initial head (50)
+            {
+                total += abs(head - request[i]);
+                head = request[i];
+                printf(" -> %d", head);
+            }
+        }
+    }
+
+    printf("\n\nTotal Head Movement = %d cylinders\n", total);
+
+    return 0;
+}
