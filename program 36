@@ -1,0 +1,51 @@
+#include <stdio.h>
+
+int main()
+{
+    int n, blocks[50], i, start, end;
+
+    printf("Enter the number of disk blocks in the file: ");
+    scanf("%d", &n);
+
+    if (n <= 0 || n > 50)
+    {
+        printf("Invalid number of blocks!\n");
+        return 1;
+    }
+
+    printf("Enter the disk block numbers:\n");
+
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &blocks[i]);
+    }
+
+    start = blocks[0];
+    end = blocks[n - 1];
+
+    printf("\nLinked File Allocation:\n");
+    printf("First Block: %d\n", start);
+    printf("Last Block : %d\n", end);
+
+    printf("\nFile Block Chain:\n");
+
+    for (i = 0; i < n; i++)
+    {
+        if (i < n - 1)
+            printf("%d -> ", blocks[i]);
+        else
+            printf("%d -> NULL\n", blocks[i]);
+    }
+
+    printf("\nBlock\tNext Block\n");
+
+    for (i = 0; i < n; i++)
+    {
+        if (i < n - 1)
+            printf("%d\t%d\n", blocks[i], blocks[i + 1]);
+        else
+            printf("%d\tNULL\n", blocks[i]);
+    }
+
+    return 0;
+}
